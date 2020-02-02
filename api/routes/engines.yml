@@ -1,0 +1,22 @@
+Returning a list of saved engines and its specifications.
+---
+definitions:
+  Engines:
+    type: object
+    properties:
+      model:
+        type: string
+      displacement:
+        type: string
+responses:
+  200:
+    description: A list of engines
+    examples:
+      engines: {
+        "_links": {
+          "collection": "/engines",
+          "self": "/engine/<document_id>"
+        },
+        "displacement": 2000,
+        "model": "testA"
+      }
