@@ -1,4 +1,4 @@
-from api.app import app, bson, Blueprint, jsonify, request, make_response
+from api.app import bson, Blueprint, jsonify, request, make_response
 from api.model.engine_model import Engine
 from api.schema.engine_schema import engine_schema, engines_schema
 from flasgger import swag_from
@@ -7,7 +7,7 @@ from flasgger import swag_from
 bp_api = Blueprint('api', __name__)
 
 
-@app.route('/engines', methods=['GET'])
+@bp_api.route('/engines', methods=['GET'])
 @swag_from('engines.yml')
 def engines():
     get_engines = Engine.objects.all()
@@ -17,7 +17,7 @@ def engines():
     return make_response(jsonify({'engines': all_engines}))
 
 
-@app.route('/engine/<id>', methods=['GET'])
+@bp_api.route('/engine/<id>', methods=['GET'])
 def engine_detail(id):
     bi = bson.objectid.ObjectId(id)
     get_engine = Engine.objects.get(id=bi)
@@ -27,7 +27,7 @@ def engine_detail(id):
     return make_response(jsonify({'engine': engine}))
 
 
-@app.route('/engine', methods=['POST'])
+@bp_api.route('/engine', methods=['POST'])
 def create_engine():
     data = request.get_json()
     engine_to_save = Engine(model=data['model'], displacement=data['displacement'])
@@ -38,7 +38,7 @@ def create_engine():
     return make_response(jsonify({'engine': saved_engine}), 201)
 
 
-@app.route('/engine/<id>', methods=['DELETE'])
+@bp_api.route('/engine/<id>', methods=['DELETE'])
 def delete_engine(id):
     bi = bson.objectid.ObjectId(id)
     Engine.objects.get(id=bi).delete()
