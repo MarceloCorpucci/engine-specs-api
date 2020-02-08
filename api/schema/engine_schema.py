@@ -1,4 +1,8 @@
-from api.app import ma
+# from api.main import ma
+from flask_marshmallow import Marshmallow
+
+
+ma = Marshmallow()
 
 
 class EngineSchema(ma.Schema):
@@ -6,7 +10,7 @@ class EngineSchema(ma.Schema):
         fields = ("model", "displacement", "_links")
 
     _links = ma.Hyperlinks(
-         {"self": ma.URLFor("engine_detail", id="<id>"), "collection": ma.URLFor("engines")}
+         {"self": ma.URLFor("engine_detail", id="<reg_id>"), "collection": ma.URLFor("engines")}
     )
 
 
