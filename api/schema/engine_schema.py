@@ -1,18 +1,12 @@
-# from api.main import ma
-from flask_marshmallow import Marshmallow
+from marshmallow_mongoengine import ModelSchema
+from api.model.engine_model import Engine
 
 
-ma = Marshmallow()
+# solution to error ModuleNotFoundError: No module named 'marshmallow.compat'
+# https://github.com/touilleMan/marshmallow-mongoengine/issues/26
 
 
-class EngineSchema(ma.Schema):
+class EngineSchema(ModelSchema):
     class Meta:
-        fields = ("model", "displacement", "_links")
+        model = Engine
 
-    _links = ma.Hyperlinks(
-         {"self": ma.URLFor("engine_detail", id="<reg_id>"), "collection": ma.URLFor("engines")}
-    )
-
-
-engine_schema = EngineSchema()
-engines_schema = EngineSchema(many=True)

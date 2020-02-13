@@ -2,7 +2,7 @@ from flask import Flask
 from api.model.engine_model import db
 from flasgger import Swagger
 from api.profile import prod, dev, test
-from api.schema.engine_schema import ma
+# from api.schema.engine_schema import ma
 from api.routes.routes import bp_api
 
 
@@ -25,7 +25,7 @@ def create_app(profile):
 
     db.init_app(app)
     app.register_blueprint(bp_api)
-    ma.init_app(app)
+    # ma.init_app(app)
     swagger = Swagger(app)
 
     app.debug = True
