@@ -1,11 +1,11 @@
 from flask_mongoengine import MongoEngine
+from bson import ObjectId
 
 
 db = MongoEngine()
 
 
 class Engine(db.Document):
-    # id = db.BinaryField(primary_key=True)
+    id = ObjectId()
     model = db.StringField()
     displacement = db.IntField()
-

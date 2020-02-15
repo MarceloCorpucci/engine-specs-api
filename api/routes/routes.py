@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify, make_response
 import bson
 from api.model.engine_model import Engine
-from api.schema.engine_schema import EngineSchema  # engine_schema, engines_schema
+from api.serializer.engine_mapper import EngineMapper
 from flasgger import swag_from
 
 
@@ -11,21 +11,19 @@ bp_api = Blueprint('api', __name__, url_prefix='/api')
 @bp_api.route('/engines', methods=['GET'])
 @swag_from('engines.yml')
 def engines():
-    get_engines = Engine.objects.all()
-    schema = EngineSchema(many=True, only=['model', 'displacement'])
-    all_engines = schema.dump(get_engines)
+    engine = Engine.objects.all()
+    mapper = EngineMapper.many(obj=engine).serialize(objs=engine)
 
-    return make_response(jsonify({'engines': all_engines}))
+    return make_response(jsonify({'engines': mapper}))
 
 
 @bp_api.route('/engine/<id>', methods=['GET'])
 def engine_detail(id):
-    # bi = bson.objectid.ObjectId(id)
-    get_engine = Engine.objects.get(id=id)
-    schema = EngineSchema
-    engine = schema.dump(get_engine)
+    bi = bson.objectid.ObjectId(id)
+    engine = Engine.objects.get(id=bi)
+    mapper = EngineMapper(obj=engine).serialize()
 
-    return make_response(jsonify({'engine': engine}))
+    return make_response(jsonify({'engine': mapper}))
 
 
 @bp_api.route('/engine', methods=['POST'])
@@ -33,15 +31,14 @@ def create_engine():
     data = request.get_json()
     engine_to_save = Engine(model=data['model'], displacement=data['displacement'])
     engine_to_save.save()
-    schema = EngineSchema
-    saved_engine = schema.dump(engine_to_save)
+    mapper = EngineMapper(obj=engine_to_save).serialize()
 
-    return make_response(jsonify({'engine': saved_engine}), 201)
+    return make_response(jsonify({'engine': mapper}), 201)
 
 
 @bp_api.route('/engine/<id>', methods=['DELETE'])
 def delete_engine(id):
-    # bi = bson.objectid.ObjectId(id)
-    Engine.objects.get(id=id).delete()
+    bi = bson.objectid.ObjectId(id)
+    Engine.objects.get(id=bi).delete()
 
     return make_response('', 204)
