@@ -8,3 +8,5 @@ class EngineMapper(Mapper):
         id = ObjectId()
         model = field.String()
         displacement = field.Integer()
+        power = field.Integer()
+        forced_induction = field.Boolean()
