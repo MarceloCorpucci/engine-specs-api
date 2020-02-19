@@ -5,6 +5,10 @@ from api.model.warning_preset_model import WarningPreset
 from api.serializer.engine_mapper import EngineMapper
 from api.serializer.warning_preset_mapper import WarningPresetMapper
 from flasgger import swag_from
+import logging
+
+
+logging.basicConfig(level=logging.INFO)
 
 
 bp_api = Blueprint('api', __name__, url_prefix='/api')
@@ -53,12 +57,21 @@ def delete_engine(id):
 @bp_api.route('/warning_preset', methods=['POST'])
 def create_warning_preset():
     data = request.get_json()
+    logging.info(data)
+    logging.info(data['engine'])
+    engine_to_save = Engine(model=data['engine']['model'],
+                            displacement=data['engine']['displacement'],
+                            power=data['engine']['power'],
+                            forced_induction=data['engine']['forced_induction']
+                            )
+
     warn_preset_to_save = WarningPreset(ect_warning=data['ect_warning'],
                                         oil_temp_warning=data['oil_temp_warning'],
-                                        rpm_warning=data['rpm_warning'],
-                                        engine=data['engine']
-                                        )
-    warn_preset_to_save.save()
-    mapper = WarningPresetMapper(obj=warn_preset_to_save).serialize()
+                                        rpm_warning=data['rpm_warning'])
 
-    return make_response(jsonify({'warning_preset': mapper}), 201)
+    warn_preset_to_save.engine.append(engine_to_save)
+    warn_preset_to_save.save()
+    # mapper = WarningPresetMapper(obj=warn_preset_to_save).serialize()
+
+    # return make_response(jsonify({'warning_preset': mapper}), 201)
+    return make_response(201)
