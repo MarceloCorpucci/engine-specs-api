@@ -71,7 +71,7 @@ def create_warning_preset():
 
     warn_preset_to_save.engine.append(engine_to_save)
     warn_preset_to_save.save()
-    # mapper = WarningPresetMapper(obj=warn_preset_to_save).serialize()
 
-    # return make_response(jsonify({'warning_preset': mapper}), 201)
-    return make_response(201)
+    mapper = WarningPresetMapper(obj=warn_preset_to_save).serialize()
+
+    return make_response(jsonify({'warning_preset': mapper}), 201)
