@@ -4,6 +4,7 @@ from api.model.engine_model import Engine
 from api.model.warning_preset_model import WarningPreset
 from api.serializer.engine_mapper import EngineMapper
 from api.serializer.warning_preset_mapper import WarningPresetMapper
+from kim import MappingInvalid
 from flasgger import swag_from
 import logging
 
@@ -57,21 +58,29 @@ def delete_engine(id):
 @bp_api.route('/warning_preset', methods=['POST'])
 def create_warning_preset():
     data = request.get_json()
-    logging.info(data)
-    logging.info(data['engine'])
-    engine_to_save = Engine(model=data['engine']['model'],
-                            displacement=data['engine']['displacement'],
-                            power=data['engine']['power'],
-                            forced_induction=data['engine']['forced_induction']
-                            )
 
-    warn_preset_to_save = WarningPreset(ect_warning=data['ect_warning'],
-                                        oil_temp_warning=data['oil_temp_warning'],
-                                        rpm_warning=data['rpm_warning'])
+    # logging.info(data)
+    # logging.info(data['engine'])
 
-    warn_preset_to_save.engine.append(engine_to_save)
-    warn_preset_to_save.save()
+    # engine_to_save = Engine(model=data['engine'][0]['model'],
+    #                         displacement=data['engine'][0]['displacement'],
+    #                         power=data['engine'][0]['power'],
+    #                         forced_induction=data['engine'][0]['forced_induction']
+    #                         )
+    #
+    # warn_preset_to_save = WarningPreset(ect_warning=data['ect_warning'],
+    #                                     oil_temp_warning=data['oil_temp_warning'],
+    #                                     rpm_warning=data['rpm_warning'])
 
-    mapper = WarningPresetMapper(obj=warn_preset_to_save).serialize()
+    # warn_preset_to_save.engine.append(engine_to_save)
+    # warn_preset_to_save.save()
 
-    return make_response(jsonify({'warning_preset': mapper}), 201)
+    mapper = WarningPresetMapper(obj=data)
+
+    try:
+        mapper.marshal()
+
+    except MappingInvalid as e:
+        logging.info(e.errors)
+
+    return make_response(jsonify({'warning_preset': mapper.serialize()}), 201)
