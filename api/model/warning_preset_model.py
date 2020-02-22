@@ -11,4 +11,4 @@ class WarningPreset(db.Document):
     ect_warning = db.IntField()
     oil_temp_warning = db.IntField()
     rpm_warning = db.IntField()
-    engine = db.ListField(db.EmbeddedDocumentField(Engine))
+    engine = db.ReferenceField(Engine)

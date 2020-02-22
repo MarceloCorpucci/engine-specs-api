@@ -9,10 +9,10 @@ def engine_getter(json):
 
 
 class WarningPresetMapper(Mapper):
-    __type__ = WarningPreset()
+    __type__ = WarningPreset
     id = ObjectId()
     ect_warning = field.Integer()
     oil_temp_warning = field.Integer()
     rpm_warning = field.Integer()
-    engine = field.Nested(EngineMapper, getter=engine_getter)
+    # engine = field.Nested(EngineMapper, getter=engine_getter)
 

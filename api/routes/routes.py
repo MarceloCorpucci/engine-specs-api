@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, make_response
+from flask import Blueprint, request, jsonify, make_response, abort
 import bson
 from api.model.engine_model import Engine
 from api.model.warning_preset_model import WarningPreset
@@ -13,6 +13,23 @@ logging.basicConfig(level=logging.INFO)
 
 
 bp_api = Blueprint('api', __name__, url_prefix='/api')
+
+
+@bp_api.route('/engine', methods=['POST'])
+def create_engine():
+    try:
+        data = request.get_json()
+        logging.info('create_engine() --> Received data: ' + str(data))
+
+        engine_model = EngineMapper(data=data).marshal()
+        engine_model.save()
+
+    except MappingInvalid as e:
+        logging.error(e.message)
+        logging.error(e.errors)
+        abort(400)
+
+    return make_response(jsonify({'engine': request.get_json()}), 201)
 
 
 @bp_api.route('/engines', methods=['GET'])
@@ -31,20 +48,6 @@ def engine_detail(id):
     mapper = EngineMapper(obj=engine).serialize()
 
     return make_response(jsonify({'engine': mapper}))
-
-
-@bp_api.route('/engine', methods=['POST'])
-def create_engine():
-    data = request.get_json()
-    engine_to_save = Engine(model=data['model'],
-                            displacement=data['displacement'],
-                            power=data['power'],
-                            forced_induction=data['forced_induction']
-                            )
-    engine_to_save.save()
-    mapper = EngineMapper(obj=engine_to_save).serialize()
-
-    return make_response(jsonify({'engine': mapper}), 201)
 
 
 @bp_api.route('/engine/<id>', methods=['DELETE'])
