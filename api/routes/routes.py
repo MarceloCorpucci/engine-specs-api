@@ -1,10 +1,7 @@
-from flask import Blueprint, request, jsonify, make_response, abort
+from flask import Blueprint, request, jsonify, make_response
 import bson
 from api.model.engine_model import Engine
 from api.model.warning_preset_model import WarningPreset
-from api.serializer.engine_mapper import EngineMapper
-from api.serializer.warning_preset_mapper import WarningPresetMapper
-from kim import MappingInvalid
 from flasgger import swag_from
 import logging
 
@@ -17,37 +14,33 @@ bp_api = Blueprint('api', __name__, url_prefix='/api')
 
 @bp_api.route('/engine', methods=['POST'])
 def create_engine():
-    try:
-        data = request.get_json()
-        logging.info('create_engine() --> Received data: ' + str(data))
+    data = request.get_json()
 
-        engine_model = EngineMapper(data=data).marshal()
-        engine_model.save()
+    logging.info('create_engine() --> Received data: ' + str(data))
 
-    except MappingInvalid as e:
-        logging.error(e.message)
-        logging.error(e.errors)
-        abort(400)
+    engine = Engine(**data)
+    engine.save()
 
-    return make_response(jsonify({'engine': request.get_json()}), 201)
+    saved_engine = Engine.objects.get(model=data['model'])
+    logging.info('Saved engine --> ' + str(saved_engine))
+
+    return make_response(jsonify({'engine': saved_engine}), 201)
 
 
 @bp_api.route('/engines', methods=['GET'])
 @swag_from('engines.yml')
-def engines():
-    engine = Engine.objects.all()
-    mapper = EngineMapper.many(obj=engine).serialize(objs=engine)
+def get_engines():
+    engines = Engine.objects.all()
 
-    return make_response(jsonify({'engines': mapper}))
+    return make_response(jsonify({'engines': engines}))
 
 
 @bp_api.route('/engine/<id>', methods=['GET'])
-def engine_detail(id):
+def get_engine(id):
     bi = bson.objectid.ObjectId(id)
     engine = Engine.objects.get(id=bi)
-    mapper = EngineMapper(obj=engine).serialize()
 
-    return make_response(jsonify({'engine': mapper}))
+    return make_response(jsonify({'engine': engine}))
 
 
 @bp_api.route('/engine/<id>', methods=['DELETE'])
@@ -78,12 +71,4 @@ def create_warning_preset():
     # warn_preset_to_save.engine.append(engine_to_save)
     # warn_preset_to_save.save()
 
-    mapper = WarningPresetMapper(obj=data)
-
-    try:
-        mapper.marshal()
-
-    except MappingInvalid as e:
-        logging.info(e.errors)
-
-    return make_response(jsonify({'warning_preset': mapper.serialize()}), 201)
+    return make_response(jsonify({'warning_preset': data}), 201)
