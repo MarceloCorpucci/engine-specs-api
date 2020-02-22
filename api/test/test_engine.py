@@ -1,6 +1,5 @@
 import pytest
 from api.main import create_app
-from api.model.engine_model import Engine
 import logging
 
 

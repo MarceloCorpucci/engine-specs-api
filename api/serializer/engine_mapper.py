@@ -5,7 +5,7 @@ from bson import ObjectId
 
 class EngineMapper(Mapper):
         __type__ = Engine
-        id = ObjectId()
+        # id = ObjectId()
         model = field.String()
         displacement = field.Integer()
         valve_amount = field.Integer()

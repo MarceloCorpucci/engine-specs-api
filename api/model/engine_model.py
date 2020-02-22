@@ -6,7 +6,7 @@ db = MongoEngine()
 
 
 class Engine(db.Document):
-    id = ObjectId()
+    # id = ObjectId()
     model = db.StringField()
     displacement = db.IntField()
     valve_amount = db.IntField()

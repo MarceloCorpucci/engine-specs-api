@@ -8,6 +8,24 @@ definitions:
         type: string
       displacement:
         type: string
+      valve_amount:
+        type: int
+      injectors:
+        type: string
+      piston_type:
+        type: string
+      camshaft:
+        type: string
+      power:
+        type: int
+      forced_induction:
+        type: bool
+      forced_induction_type:
+        type: string
+      forced_induction_model:
+        type: string
+      fuel_type:
+        type: string
 responses:
   200:
     description: A list of engines
