@@ -1,5 +1,6 @@
-from flask import Blueprint, request, jsonify, make_response
+from flask import Blueprint, request, abort, jsonify, make_response
 import bson
+from mongoengine import ValidationError
 from api.model.engine_model import Engine
 from api.model.warning_preset_model import WarningPreset
 from flasgger import swag_from
@@ -15,11 +16,15 @@ bp_api = Blueprint('api', __name__, url_prefix='/api')
 @bp_api.route('/engine', methods=['POST'])
 def create_engine():
     data = request.get_json()
+    try:
+        logging.info('create_engine() --> Received data: ' + str(data))
 
-    logging.info('create_engine() --> Received data: ' + str(data))
+        engine = Engine(**data)
+        engine.save()
 
-    engine = Engine(**data)
-    engine.save()
+    except ValidationError as e:
+        logging.error(e.errors)
+        abort(400)
 
     saved_engine = Engine.objects.get(model=data['model'])
     logging.info('Saved engine --> ' + str(saved_engine))
@@ -31,21 +36,23 @@ def create_engine():
 @swag_from('engines.yml')
 def get_engines():
     engines = Engine.objects.all()
+    logging.info('get_engines() --> Retrieving data: ' + str(engines))
 
     return make_response(jsonify({'engines': engines}))
 
 
-@bp_api.route('/engine/<id>', methods=['GET'])
-def get_engine(id):
-    bi = bson.objectid.ObjectId(id)
+@bp_api.route('/engine/<engine_id>', methods=['GET'])
+def get_engine(engine_id):
+    bi = bson.objectid.ObjectId(engine_id)
     engine = Engine.objects.get(id=bi)
+    logging.info('get_engine() --> Retrieving data: ' + str(engine))
 
     return make_response(jsonify({'engine': engine}))
 
 
-@bp_api.route('/engine/<id>', methods=['DELETE'])
-def delete_engine(id):
-    bi = bson.objectid.ObjectId(id)
+@bp_api.route('/engine/<engine_id>', methods=['DELETE'])
+def delete_engine(engine_id):
+    bi = bson.objectid.ObjectId(engine_id)
     Engine.objects.get(id=bi).delete()
 
     return make_response('', 204)
