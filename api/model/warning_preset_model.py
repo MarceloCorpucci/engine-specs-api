@@ -1,5 +1,4 @@
 from flask_mongoengine import MongoEngine
-from bson import ObjectId
 from api.model.engine_model import Engine
 
 
@@ -7,8 +6,7 @@ db = MongoEngine()
 
 
 class WarningPreset(db.Document):
-    id = ObjectId()
-    ect_warning = db.IntField()
-    oil_temp_warning = db.IntField()
-    rpm_warning = db.IntField()
-    engine = db.ReferenceField(Engine)
+    ect_warning = db.IntField(required=True)
+    oil_temp_warning = db.IntField(required=True)
+    rpm_warning = db.IntField(required=True)
+    engine = db.ReferenceField(Engine, required=True)

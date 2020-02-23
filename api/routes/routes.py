@@ -5,6 +5,7 @@ from api.model.engine_model import Engine
 from api.model.warning_preset_model import WarningPreset
 from flasgger import swag_from
 import logging
+import json
 
 
 logging.basicConfig(level=logging.INFO)
@@ -61,21 +62,22 @@ def delete_engine(engine_id):
 @bp_api.route('/warning_preset', methods=['POST'])
 def create_warning_preset():
     data = request.get_json()
+    logging.info('create_warning_preset() --> Received data: ' + str(data))
 
-    # logging.info(data)
-    # logging.info(data['engine'])
+    try:
+        json_data = json.loads(data)
+        bi = bson.objectid.ObjectId(json_data['engine']['$oid'])
 
-    # engine_to_save = Engine(model=data['engine'][0]['model'],
-    #                         displacement=data['engine'][0]['displacement'],
-    #                         power=data['engine'][0]['power'],
-    #                         forced_induction=data['engine'][0]['forced_induction']
-    #                         )
-    #
-    # warn_preset_to_save = WarningPreset(ect_warning=data['ect_warning'],
-    #                                     oil_temp_warning=data['oil_temp_warning'],
-    #                                     rpm_warning=data['rpm_warning'])
+        warn_preset_to_save = WarningPreset(ect_warning=json_data['ect_warning'],
+                                            oil_temp_warning=json_data['oil_temp_warning'],
+                                            rpm_warning=json_data['rpm_warning'])
+        warn_preset_to_save.engine = Engine.objects.get(id=bi)
+        warn_preset_to_save.save()
 
-    # warn_preset_to_save.engine.append(engine_to_save)
-    # warn_preset_to_save.save()
+    except ValidationError as e:
+        logging.error(e.errors)
+        abort(400)
+
+    logging.info('Saved engine --> ' + str(warn_preset_to_save))
 
     return make_response(jsonify({'warning_preset': data}), 201)
