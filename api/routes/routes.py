@@ -42,10 +42,18 @@ def get_engines():
     return make_response(jsonify({'engines': engines}))
 
 
-@bp_api.route('/engine/<engine_id>', methods=['GET'])
-def get_engine(engine_id):
-    bi = bson.objectid.ObjectId(engine_id)
-    engine = Engine.objects.get(id=bi)
+# @bp_api.route('/engine/<engine_id>', methods=['GET'])
+# def get_engine(engine_id):
+#     bi = bson.objectid.ObjectId(engine_id)
+#     engine = Engine.objects.get(id=bi)
+#     logging.info('get_engine() --> Retrieving data: ' + str(engine))
+#
+#     return make_response(jsonify({'engine': engine}))
+
+
+@bp_api.route('/engine/<model>', methods=['GET'])
+def get_engine(model):
+    engine = Engine.objects.get(model=model)
     logging.info('get_engine() --> Retrieving data: ' + str(engine))
 
     return make_response(jsonify({'engine': engine}))
