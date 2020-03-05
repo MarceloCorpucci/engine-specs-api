@@ -42,13 +42,13 @@ def get_engines():
     return make_response(jsonify({'engines': engines}))
 
 
-# @bp_api.route('/engine/<engine_id>', methods=['GET'])
-# def get_engine(engine_id):
-#     bi = bson.objectid.ObjectId(engine_id)
-#     engine = Engine.objects.get(id=bi)
-#     logging.info('get_engine() --> Retrieving data: ' + str(engine))
-#
-#     return make_response(jsonify({'engine': engine}))
+@bp_api.route('/engine/<engine_id>', methods=['GET'])
+def get_engine_id(engine_id):
+    bi = bson.objectid.ObjectId(engine_id)
+    engine = Engine.objects.get(id=bi)
+    logging.info('get_engine_id() --> Retrieving data: ' + str(engine))
+
+    return make_response(jsonify({'engine': engine}))
 
 
 @bp_api.route('/engine/<model>', methods=['GET'])
@@ -73,13 +73,12 @@ def create_warning_preset():
     logging.info('create_warning_preset() --> Received data: ' + str(data))
 
     try:
-        json_data = json.loads(data)
-        bi = bson.objectid.ObjectId(json_data['engine']['$oid'])
+        json_data = json.loads(str(data).replace('\'', '\"'))
 
         warn_preset_to_save = WarningPreset(ect_warning=json_data['ect_warning'],
                                             oil_temp_warning=json_data['oil_temp_warning'],
                                             rpm_warning=json_data['rpm_warning'])
-        warn_preset_to_save.engine = Engine.objects.get(id=bi)
+        warn_preset_to_save.engine = Engine.objects.get(model=json_data['engine']['model'])
         warn_preset_to_save.save()
 
     except ValidationError as e:
@@ -89,3 +88,11 @@ def create_warning_preset():
     logging.info('Saved engine --> ' + str(warn_preset_to_save))
 
     return make_response(jsonify({'warning_preset': data}), 201)
+
+
+@bp_api.route('/warning_presets', methods=['GET'])
+def get_warning_presets():
+    warn_presets = WarningPreset.objects.all()
+    logging.info('get_warning_presets() --> Retrieving data: ' + str(warn_presets))
+
+    return make_response(jsonify({'warn_presets': warn_presets}))
