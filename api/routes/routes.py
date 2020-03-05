@@ -96,3 +96,20 @@ def get_warning_presets():
     logging.info('get_warning_presets() --> Retrieving data: ' + str(warn_presets))
 
     return make_response(jsonify({'warn_presets': warn_presets}))
+
+
+@bp_api.route('/warning_preset/<warning_preset_id>', methods=['GET'])
+def get_warning_preset(warning_preset_id):
+    bi = bson.objectid.ObjectId(warning_preset_id)
+    warn_preset = WarningPreset.objects.get(id=bi)
+    logging.info('get_warning_preset() --> Retrieving data: ' + str(warn_preset))
+
+    return make_response(jsonify({'warning_preset': warn_preset}))
+
+
+@bp_api.route('/warning_preset/<warning_preset_id>', methods=['DELETE'])
+def delete_warning_preset(warning_preset_id):
+    bi = bson.objectid.ObjectId(warning_preset_id)
+    WarningPreset.objects.get(id=bi).delete()
+
+    return make_response('', 204)
