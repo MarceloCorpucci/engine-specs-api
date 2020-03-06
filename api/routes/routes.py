@@ -15,6 +15,7 @@ bp_api = Blueprint('api', __name__, url_prefix='/api')
 
 
 @bp_api.route('/engine', methods=['POST'])
+@swag_from('create_engine.yml')
 def create_engine():
     data = request.get_json()
     try:
@@ -43,6 +44,7 @@ def get_engines():
 
 
 @bp_api.route('/engine/<engine_id>', methods=['GET'])
+@swag_from('engine.yml')
 def get_engine_id(engine_id):
     bi = bson.objectid.ObjectId(engine_id)
     engine = Engine.objects.get(id=bi)

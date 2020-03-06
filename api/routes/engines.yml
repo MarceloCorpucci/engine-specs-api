@@ -31,10 +31,16 @@ responses:
     description: A list of engines
     examples:
       engines: {
-        "_links": {
-          "collection": "/engines",
-          "self": "/engine/<document_id>"
+        "_id": {
+          "$oid": "aAbB79d4a4b36c363112233"
         },
-        "displacement": 2000,
-        "model": "testA"
+        "camshaft": "standard",
+        "displacement": 1781,
+        "forced_induction": false,
+        "fuel_type": "gasoline",
+        "injectors": "standard",
+        "model": "AP-1800",
+        "piston_type": "cast",
+        "power": 112,
+        "valve_amount": 8
       }

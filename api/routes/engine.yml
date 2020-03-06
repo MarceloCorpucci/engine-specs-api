@@ -1,0 +1,24 @@
+Returning a list of saved engines and its specifications.
+---
+parameters:
+  - name: id
+    type: string
+    required: true
+responses:
+  200:
+    description: A persisted engine
+    examples:
+      engines: {
+        "_id": {
+          "$oid": "aAbB79d4a4b36c363112233"
+        },
+        "camshaft": "standard",
+        "displacement": 1781,
+        "forced_induction": false,
+        "fuel_type": "gasoline",
+        "injectors": "standard",
+        "model": "AP-1800",
+        "piston_type": "cast",
+        "power": 112,
+        "valve_amount": 8
+      }
