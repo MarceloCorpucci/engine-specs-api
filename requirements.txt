@@ -1,5 +1,6 @@
 Flask==1.1.1
-Flask-Security==3.0.0
+PyJWT==1.7.1
+Flask-Bcrypt==0.7.1
 mongoengine==0.19.1
 mongomock==3.18.0
 flask-mongoengine==0.9.5

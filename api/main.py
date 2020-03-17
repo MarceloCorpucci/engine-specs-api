@@ -1,12 +1,8 @@
 from flask import Flask
 from api.model.engine_model import db
-from api.model.authentication_model import User, Role
-from flask_security import Security, MongoEngineUserDatastore
 from flasgger import Swagger
 from api.profile import prod, dev, test
 from api.routes.routes import bp_api
-from api.utils.responses import response_with
-import api.utils.responses as resp
 
 
 def create_app(profile):
@@ -27,8 +23,6 @@ def create_app(profile):
     }
 
     db.init_app(app)
-    user_datastore = MongoEngineUserDatastore(db, User, Role)
-    security = Security(app, user_datastore)
     app.register_blueprint(bp_api)
     swagger = Swagger(app)
 
