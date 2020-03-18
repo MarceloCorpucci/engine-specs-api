@@ -1,7 +1,5 @@
 from flask import Blueprint, request, abort, jsonify, make_response
 import bson
-from api.models.users import User
-from flask_jwt_extended import create_access_token
 from mongoengine import ValidationError
 from api.model.engine_model import Engine
 from api.model.warning_preset_model import WarningPreset

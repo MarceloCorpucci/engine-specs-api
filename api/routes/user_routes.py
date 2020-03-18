@@ -1,6 +1,6 @@
 from flask import Blueprint, request, abort, jsonify, make_response
 import bson
-from api.models.users import User
+from api.model.user import User
 from flask_jwt_extended import create_access_token
 from api.utils.responses import response_with
 from api.utils import responses as resp
@@ -20,7 +20,7 @@ def create_user():
         request_data = request.get_json()
         request_data['password'] = User.generate_hash(request_data['password'])
 
-        user = User()
+        user = User(email=request_data['email'], password=request_data['password'])
         user.save()
 
         return response_with(resp.SUCCESS_201)
