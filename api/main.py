@@ -24,6 +24,7 @@ def create_app(profile):
         'host': config.MONGODB_HOST
     }
 
+    app.config['JWT_SECRET_KEY'] = 'super-secret'
     jwt = JWTManager(app)
     db.init_app(app)
     app.register_blueprint(usr_api)
