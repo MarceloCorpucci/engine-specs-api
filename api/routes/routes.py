@@ -1,4 +1,5 @@
 from flask import Blueprint, request, abort, jsonify, make_response
+from flask_jwt_extended import jwt_required
 import bson
 from mongoengine import ValidationError
 from api.model.engine_model import Engine
@@ -15,6 +16,7 @@ bp_api = Blueprint('api', __name__, url_prefix='/api')
 
 
 @bp_api.route('/engine', methods=['POST'])
+@jwt_required
 @swag_from('create_engine.yml')
 def create_engine():
     data = request.get_json()
