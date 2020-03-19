@@ -21,6 +21,10 @@ class User(db.Document):
     def generate_hash(password):
         return sha256.hash(password)
 
+    @staticmethod
+    def verify_hash(password, a_hash):
+        return sha256.verify(password, a_hash)
+
     @classmethod
     def find_by_email(cls, email):
         return cls.objects.get(email=email)

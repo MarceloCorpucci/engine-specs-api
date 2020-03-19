@@ -25,6 +25,12 @@ BAD_REQUEST_400 = {
 	"message": "Bad request"
 }
 
+UNAUTHORIZED_401 = {
+	"http_code": 401,
+	"code": "Unauthorized",
+	"message": "You are not authorized to make this request."
+}
+
 SERVER_ERROR_500 = {
 	"http_code": 500,
 	"code": "serverError",
