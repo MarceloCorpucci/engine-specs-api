@@ -64,6 +64,7 @@ def get_engine(model):
 
 
 @bp_api.route('/engine/<engine_id>', methods=['DELETE'])
+@jwt_required
 def delete_engine(engine_id):
     bi = bson.objectid.ObjectId(engine_id)
     Engine.objects.get(id=bi).delete()
@@ -72,6 +73,7 @@ def delete_engine(engine_id):
 
 
 @bp_api.route('/warning_preset', methods=['POST'])
+@jwt_required
 def create_warning_preset():
     data = request.get_json()
     logging.info('create_warning_preset() --> Received data: ' + str(data))
@@ -112,6 +114,7 @@ def get_warning_preset(warning_preset_id):
 
 
 @bp_api.route('/warning_preset/<warning_preset_id>', methods=['DELETE'])
+@jwt_required
 def delete_warning_preset(warning_preset_id):
     bi = bson.objectid.ObjectId(warning_preset_id)
     WarningPreset.objects.get(id=bi).delete()
