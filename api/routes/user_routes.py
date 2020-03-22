@@ -1,11 +1,9 @@
-from flask import Blueprint, request, abort, jsonify, make_response
-import bson
-from api.model.user import User
+from flask import Blueprint, request
+from api.model.user_model import User
 from flask_jwt_extended import create_access_token
 from api.utils.responses import response_with
 from api.utils import responses as resp
 import logging
-import json
 
 
 logging.basicConfig(level=logging.INFO)
