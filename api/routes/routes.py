@@ -55,7 +55,7 @@ def get_engine_id(engine_id):
     return make_response(jsonify({'engine': engine}))
 
 
-@bp_api.route('/engine/<model>', methods=['GET'])
+@bp_api.route('/engine/model/<model>', methods=['GET'])
 def get_engine(model):
     engine = Engine.objects.get(model=model)
     logging.info('get_engine() --> Retrieving data: ' + str(engine))
