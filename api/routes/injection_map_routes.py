@@ -14,10 +14,10 @@ import json
 logging.basicConfig(level=logging.INFO)
 
 
-bp_api = Blueprint('api', __name__, url_prefix='/api/injection_map')
+im_api = Blueprint('im_api', __name__, url_prefix='/api/injection_map')
 
 
-@bp_api.route('/', methods=['POST'])
+@im_api.route('/', methods=['POST'])
 @jwt_required
 def create_injection_map():
     try:

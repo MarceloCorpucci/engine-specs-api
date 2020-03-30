@@ -6,6 +6,6 @@ db = MongoEngine()
 
 
 class InjectionMap(db.Document):
-    map = db.DictField(required=True)
-    date = db.DateField(required=True)
+    map = db.ListField(required=True)
+    date = db.DateTimeField(required=True)
     user = db.ReferenceField(User, required=True)

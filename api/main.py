@@ -5,6 +5,7 @@ from flasgger import Swagger
 from api.profile import prod, dev, test
 from api.routes.routes import bp_api
 from api.routes.user_routes import usr_api
+from api.routes.injection_map_routes import im_api
 
 
 def create_app(profile):
@@ -29,6 +30,7 @@ def create_app(profile):
     db.init_app(app)
     app.register_blueprint(usr_api)
     app.register_blueprint(bp_api)
+    app.register_blueprint(im_api)
     swagger = Swagger(app)
 
     app.debug = True
