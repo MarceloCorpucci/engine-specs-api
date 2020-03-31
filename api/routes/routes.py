@@ -81,7 +81,8 @@ def create_warning_preset():
     try:
         json_data = json.loads(str(data).replace('\'', '\"'))
 
-        warn_preset_to_save = WarningPreset(ect_warning=json_data['ect_warning'],
+        warn_preset_to_save = WarningPreset(name=json_data['name'],
+                                            ect_warning=json_data['ect_warning'],
                                             oil_temp_warning=json_data['oil_temp_warning'],
                                             rpm_warning=json_data['rpm_warning'])
         warn_preset_to_save.engine = Engine.objects.get(model=json_data['engine']['model'])
