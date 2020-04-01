@@ -6,6 +6,7 @@ from api.profile import prod, dev, test
 from api.routes.routes import bp_api
 from api.routes.user_routes import usr_api
 from api.routes.injection_map_routes import im_api
+from api.routes.ecu_routes import ecu_api
 
 
 def create_app(profile):
@@ -31,6 +32,7 @@ def create_app(profile):
     app.register_blueprint(usr_api)
     app.register_blueprint(bp_api)
     app.register_blueprint(im_api)
+    app.register_blueprint(ecu_api)
     swagger = Swagger(app)
 
     app.debug = True

@@ -30,7 +30,7 @@ def create_ecu():
 						  date_added=json_data['date_added'])
 
 		ecu_to_save.engine = Engine.objects.get(model=json_data['engine']['model'])
-		ecu_to_save.warning_preset = WarningPreset.objects.get(???=json_data['warning_preset']['???'])
+		ecu_to_save.warning_preset = WarningPreset.objects.get(name=json_data['warning_preset']['name'])
 		ecu_to_save.user = User.objects.get(email=json_data['user']['email'])
 
 		ecu_to_save.save()
