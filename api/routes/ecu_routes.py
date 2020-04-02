@@ -48,3 +48,29 @@ def get_ecu():
     logging.info('get_ecu() --> Retrieving data: ' + str(ecu))
 
     return make_response(jsonify({'ecu': ecu}))
+
+
+@ecu_api.route('/model/<model>', methods=['GET'])
+def get_ecu_by_model(model):
+    ecu = Ecu.objects.get(model=model)
+    logging.info('get_ecu_by_model() --> Retrieving data: ' + str(ecu))
+
+    return make_response(jsonify({'ecu': ecu}))
+
+
+@ecu_api.route('/<ecu_id>', methods=['GET'])
+def get_ecu_by_id(ecu_id):
+    bi = bson.objectid.ObjectId(ecu_id)
+    ecu = Ecu.objects.get(id=bi)
+    logging.info('get_ecu_by_id() --> Retrieving data: ' + str(ecu))
+
+    return make_response(jsonify({'ecu': ecu}))
+
+
+@ecu_api.route('/<ecu_id>', methods=['DELETE'])
+@jwt_required
+def delete_ecu(ecu_id):
+    bi = bson.objectid.ObjectId(ecu_id)
+    Ecu.objects.get(id=bi).delete()
+
+    return make_response('', 204)
