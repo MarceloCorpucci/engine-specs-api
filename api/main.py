@@ -3,7 +3,8 @@ from flask_jwt_extended import JWTManager
 from api.model.engine_model import db
 from flasgger import Swagger
 from api.profile import prod, dev, test
-from api.routes.routes import bp_api
+from api.routes.engine_routes import ng_api
+from api.routes.warning_preset_routes import wp_api
 from api.routes.user_routes import usr_api
 from api.routes.injection_map_routes import im_api
 from api.routes.ecu_routes import ecu_api
@@ -30,7 +31,8 @@ def create_app(profile):
     jwt = JWTManager(app)
     db.init_app(app)
     app.register_blueprint(usr_api)
-    app.register_blueprint(bp_api)
+    app.register_blueprint(ng_api)
+    app.register_blueprint(wp_api)
     app.register_blueprint(im_api)
     app.register_blueprint(ecu_api)
     swagger = Swagger(app)
