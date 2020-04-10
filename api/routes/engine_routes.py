@@ -10,10 +10,10 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 
-ng_api = Blueprint('ng_api', __name__, url_prefix='/api/engine')
+ng_api = Blueprint('ng_api', __name__, url_prefix='/api/engines')
 
 
-@ng_api.route('/', methods=['POST'])
+@ng_api.route('/engine', methods=['POST'])
 @jwt_required
 @swag_from('create_engine.yml')
 def create_engine():
@@ -43,7 +43,7 @@ def get_engines():
     return make_response(jsonify({'engines': engines}))
 
 
-@ng_api.route('/<engine_id>', methods=['GET'])
+@ng_api.route('/engine/<engine_id>', methods=['GET'])
 @swag_from('engine.yml')
 def get_engine_id(engine_id):
     bi = bson.objectid.ObjectId(engine_id)
@@ -61,7 +61,7 @@ def get_engine(model):
     return make_response(jsonify({'engine': engine}))
 
 
-@ng_api.route('/<engine_id>', methods=['DELETE'])
+@ng_api.route('/engine/<engine_id>', methods=['DELETE'])
 @jwt_required
 def delete_engine(engine_id):
     bi = bson.objectid.ObjectId(engine_id)
