@@ -12,10 +12,10 @@ import json
 logging.basicConfig(level=logging.INFO)
 
 
-wp_api = Blueprint('wp_api', __name__, url_prefix='/api/warning_preset')
+wp_api = Blueprint('wp_api', __name__, url_prefix='/api/warning_presets')
 
 
-@wp_api.route('/', methods=['POST'])
+@wp_api.route('/warning_preset', methods=['POST'])
 @jwt_required
 def create_warning_preset():
     data = request.get_json()
@@ -35,7 +35,7 @@ def create_warning_preset():
         logging.error(e.errors)
         abort(400)
 
-    logging.info('Saved engine --> ' + str(warn_preset_to_save))
+    logging.info('Saved warning_preset --> ' + str(warn_preset_to_save))
 
     return make_response(jsonify({'warning_preset': data}), 201)
 
@@ -48,7 +48,7 @@ def get_warning_presets():
     return make_response(jsonify({'warn_presets': warn_presets}))
 
 
-@wp_api.route('/<warning_preset_id>', methods=['GET'])
+@wp_api.route('/warning_preset/<warning_preset_id>', methods=['GET'])
 def get_warning_preset(warning_preset_id):
     bi = bson.objectid.ObjectId(warning_preset_id)
     warn_preset = WarningPreset.objects.get(id=bi)
@@ -57,7 +57,7 @@ def get_warning_preset(warning_preset_id):
     return make_response(jsonify({'warning_preset': warn_preset}))
 
 
-@wp_api.route('/<warning_preset_id>', methods=['DELETE'])
+@wp_api.route('/warning_preset/<warning_preset_id>', methods=['DELETE'])
 @jwt_required
 def delete_warning_preset(warning_preset_id):
     bi = bson.objectid.ObjectId(warning_preset_id)

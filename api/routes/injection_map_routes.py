@@ -15,10 +15,10 @@ import json
 logging.basicConfig(level=logging.INFO)
 
 
-im_api = Blueprint('im_api', __name__, url_prefix='/api/injection_map')
+im_api = Blueprint('im_api', __name__, url_prefix='/api/injection_maps')
 
 
-@im_api.route('/', methods=['POST'])
+@im_api.route('/injection_map', methods=['POST'])
 @jwt_required
 def create_injection_map():
     try:
@@ -56,7 +56,7 @@ def get_injection_map_by_ecu(ecu_model):
     return make_response(jsonify({'injection_map': injection_map}))
 
 
-@im_api.route('/<injection_map_id>', methods=['DELETE'])
+@im_api.route('/injection_map/<injection_map_id>', methods=['DELETE'])
 @jwt_required
 def delete_injection_map(injection_map_id):
     bi = bson.objectid.ObjectId(injection_map_id)

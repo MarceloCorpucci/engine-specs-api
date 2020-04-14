@@ -14,10 +14,10 @@ import json
 
 logging.basicConfig(level=logging.INFO)
 
-ecu_api = Blueprint('ecu_api', __name__, url_prefix='/api/ecu')
+ecu_api = Blueprint('ecu_api', __name__, url_prefix='/api/ecus')
 
 
-@ecu_api.route('/', methods=['POST'])
+@ecu_api.route('/ecu', methods=['POST'])
 @jwt_required
 def create_ecu():
     try:
@@ -58,7 +58,7 @@ def get_ecu_by_model(model):
     return make_response(jsonify({'ecu': ecu}))
 
 
-@ecu_api.route('/<ecu_id>', methods=['GET'])
+@ecu_api.route('/ecu/<ecu_id>', methods=['GET'])
 def get_ecu_by_id(ecu_id):
     bi = bson.objectid.ObjectId(ecu_id)
     ecu = Ecu.objects.get(id=bi)
@@ -67,7 +67,7 @@ def get_ecu_by_id(ecu_id):
     return make_response(jsonify({'ecu': ecu}))
 
 
-@ecu_api.route('/<ecu_id>', methods=['DELETE'])
+@ecu_api.route('/ecu/<ecu_id>', methods=['DELETE'])
 @jwt_required
 def delete_ecu(ecu_id):
     bi = bson.objectid.ObjectId(ecu_id)
