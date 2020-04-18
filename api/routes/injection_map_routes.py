@@ -39,7 +39,7 @@ def create_injection_map():
         return response_with(resp.INVALID_INPUT_422)
 
 
-@im_api.route('/', methods=['GET'])
+@im_api.route('/injection_map', methods=['GET'])
 def get_injection_map():
     injection_map = InjectionMap.objects.all()
     logging.info('get_injection_map() --> Retrieving data: ' + str(injection_map))
