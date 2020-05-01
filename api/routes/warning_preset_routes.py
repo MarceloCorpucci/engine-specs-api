@@ -22,13 +22,13 @@ def create_warning_preset():
     logging.info('create_warning_preset() --> Received data: ' + str(data))
 
     try:
-        json_data = json.loads(str(data).replace('\'', '\"'))
+        # json_data = json.loads(str(data).replace('\'', '\"'))
 
-        warn_preset_to_save = WarningPreset(name=json_data['name'],
-                                            ect_warning=json_data['ect_warning'],
-                                            oil_temp_warning=json_data['oil_temp_warning'],
-                                            rpm_warning=json_data['rpm_warning'])
-        warn_preset_to_save.engine = Engine.objects.get(model=json_data['engine']['model'])
+        warn_preset_to_save = WarningPreset(name=data['name'],
+                                            ect_warning=data['ect_warning'],
+                                            oil_temp_warning=data['oil_temp_warning'],
+                                            rpm_warning=data['rpm_warning'])
+        warn_preset_to_save.engine = Engine.objects.get(model=data['engine']['model'])
         warn_preset_to_save.save()
 
     except ValidationError as e:
