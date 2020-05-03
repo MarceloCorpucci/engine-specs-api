@@ -57,10 +57,26 @@ def get_warning_preset(warning_preset_id):
     return make_response(jsonify({'warning_preset': warn_preset}))
 
 
+@wp_api.route('/warning_preset/name/<name>', methods=['GET'])
+def get_warning_preset_by_name(name):
+    warn_preset = WarningPreset.objects.get(name=name)
+    logging.info('get_warning_preset() --> Sending data: ' + str(warn_preset))
+
+    return make_response(jsonify({'warning_preset': warn_preset}))
+
+
 @wp_api.route('/warning_preset/<warning_preset_id>', methods=['DELETE'])
 @jwt_required
 def delete_warning_preset(warning_preset_id):
     bi = bson.objectid.ObjectId(warning_preset_id)
     WarningPreset.objects.get(id=bi).delete()
+
+    return make_response('', 204)
+
+
+@wp_api.route('/warning_preset/name/<name>', methods=['DELETE'])
+@jwt_required
+def delete_warning_preset_by_name(name):
+    WarningPreset.objects.get(name=name).delete()
 
     return make_response('', 204)
