@@ -23,23 +23,26 @@ def create_ecu():
     try:
         data = request.get_json()
         logging.info('create_ecu() --> Received data: ' + str(data))
-        json_data = json.loads(str(data).replace('\'', '\"'))
+        # json_data = json.loads(str(data).replace('\'', '\"'))
 
-        ecu_to_save = Ecu(model=json_data['model'],
-                          firmware=json_data['firmware'],
-                          date_added=json_data['date_added'])
+        ecu_to_save = Ecu(model=data['model'],
+                          firmware=data['firmware'],
+                          date_added=data['date_added'])
 
-        ecu_to_save.engine = Engine.objects.get(model=json_data['engine']['model'])
-        ecu_to_save.warning_preset = WarningPreset.objects.get(name=json_data['warning_preset']['name'])
-        ecu_to_save.user = User.objects.get(email=json_data['user']['email'])
+        ecu_to_save.engine = Engine.objects.get(model=data['engine']['model'])
+        ecu_to_save.warning_preset = WarningPreset.objects.get(name=data['warning_preset']['name'])
+        ecu_to_save.user = User.objects.get(email=data['user']['email'])
 
         ecu_to_save.save()
-
-        return response_with(resp.SUCCESS_201)
 
     except Exception as e:
         logging.error(e)
         return response_with(resp.INVALID_INPUT_422)
+
+    saved_record = Ecu.objects.get(model=data['model'])
+    logging.info('Saved Ecu --> ' + str(saved_record))
+
+    return make_response(jsonify({'ecu': saved_record}), 201)
 
 
 @ecu_api.route('/', methods=['GET'])

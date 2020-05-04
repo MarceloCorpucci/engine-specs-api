@@ -8,7 +8,7 @@ db = MongoEngine()
 
 
 class Ecu(db.Document):
-    model = db.StringField(unique=True)
+    model = db.StringField(unique=False)
     firmware = db.StringField(required=True)
     date_added = db.DateTimeField(required=True)
     engine = db.ReferenceField(Engine, required=True)

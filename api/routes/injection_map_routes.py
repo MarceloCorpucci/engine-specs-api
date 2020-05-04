@@ -24,19 +24,22 @@ def create_injection_map():
     try:
         data = request.get_json()
         logging.info('create_injection_map() --> Received data: ' + str(data))
-        json_data = json.loads(str(data).replace('\'', '\"'))
+        # json_data = json.loads(str(data).replace('\'', '\"'))
 
-        map_to_save = InjectionMap(map=json_data['map'],
-                                   date=json_data['date'])
-        map_to_save.ecu = Ecu.objects.get(model=json_data['ecu']['model'])
-        map_to_save.user = User.objects.get(email=json_data['user']['email'])
+        map_to_save = InjectionMap(map=data['map'],
+                                   date=data['date'])
+        map_to_save.ecu = Ecu.objects.get(model=data['ecu']['model'])
+        map_to_save.user = User.objects.get(email=data['user']['email'])
         map_to_save.save()
-
-        return response_with(resp.SUCCESS_201)
 
     except Exception as e:
         logging.error(e)
         return response_with(resp.INVALID_INPUT_422)
+
+    saved_record = InjectionMap.objects.get(ecu=data['ecu']['model'])
+    logging.info('Saved Injection Map --> ' + str(saved_record))
+
+    return make_response(jsonify({'injection_map': saved_record}), 201)
 
 
 @im_api.route('/injection_map', methods=['GET'])

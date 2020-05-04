@@ -22,8 +22,6 @@ def create_warning_preset():
     logging.info('create_warning_preset() --> Received data: ' + str(data))
 
     try:
-        # json_data = json.loads(str(data).replace('\'', '\"'))
-
         warn_preset_to_save = WarningPreset(name=data['name'],
                                             ect_warning=data['ect_warning'],
                                             oil_temp_warning=data['oil_temp_warning'],
@@ -35,9 +33,10 @@ def create_warning_preset():
         logging.error(e.errors)
         abort(400)
 
-    logging.info('Saved warning_preset --> ' + str(warn_preset_to_save))
+    saved_record = WarningPreset.objects.get(name=data['name'])
+    logging.info('Saved warning_preset --> ' + str(saved_record))
 
-    return make_response(jsonify({'warning_preset': data}), 201)
+    return make_response(jsonify({'warning_preset': saved_record}), 201)
 
 
 @wp_api.route('/', methods=['GET'])
