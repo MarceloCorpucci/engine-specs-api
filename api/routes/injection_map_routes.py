@@ -66,3 +66,13 @@ def delete_injection_map(injection_map_id):
     InjectionMap.objects.get(id=bi).delete()
 
     return make_response('', 204)
+
+
+@im_api.route('/ecu_model/<ecu_model>', methods=['DELETE'])
+@jwt_required
+def delete_injection_map(ecu_model):
+    ecu = Ecu.objects.get(model=ecu_model).delete()
+    InjectionMap.objects.get(ecu=ecu).delete()
+
+    return make_response('', 204)
+

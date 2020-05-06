@@ -77,3 +77,10 @@ def delete_ecu(ecu_id):
     Ecu.objects.get(id=bi).delete()
 
     return make_response('', 204)
+
+
+@ecu_api.route('/model/<model>', methods=['DELETE'])
+@jwt_required
+def delete_ecu_by_model(model):
+
+    return make_response('', 204)
