@@ -12,7 +12,7 @@ def preset_name(val):
     included = [False if not mode in val else True for mode in MODES]
 
     if not any(included):
-        raise ValidationError('Preset name is not including the type')
+        raise ValidationError('Preset name is not including a type')
 
 
 class WarningPreset(db.Document):
