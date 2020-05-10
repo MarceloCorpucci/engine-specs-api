@@ -11,6 +11,7 @@ from api.utils.responses import response_with
 from api.utils import responses as resp
 import logging
 import json
+import datetime
 
 logging.basicConfig(level=logging.INFO)
 
@@ -56,7 +57,7 @@ def get_ecu():
 @ecu_api.route('/model/<model>', methods=['GET'])
 def get_ecu_by_model(model):
     ecu = Ecu.objects.get(model=model)
-    ecu.date_added = ecu.date_added.isoformat()
+    ecu.date_added = datetime.strptime(ecu.date_added, "%Y-%m-%d")
     logging.info('get_ecu_by_model() --> Retrieving data: ' + str(ecu))
 
     return make_response(jsonify({'ecu': ecu}))
