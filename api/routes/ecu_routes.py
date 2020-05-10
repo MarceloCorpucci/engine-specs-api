@@ -56,6 +56,7 @@ def get_ecu():
 @ecu_api.route('/model/<model>', methods=['GET'])
 def get_ecu_by_model(model):
     ecu = Ecu.objects.get(model=model)
+    ecu.date_added = ecu.date_added.isoformat()
     logging.info('get_ecu_by_model() --> Retrieving data: ' + str(ecu))
 
     return make_response(jsonify({'ecu': ecu}))
@@ -65,6 +66,7 @@ def get_ecu_by_model(model):
 def get_ecu_by_id(ecu_id):
     bi = bson.objectid.ObjectId(ecu_id)
     ecu = Ecu.objects.get(id=bi)
+    ecu.date_added = ecu.date_added.isoformat()
     logging.info('get_ecu_by_id() --> Retrieving data: ' + str(ecu))
 
     return make_response(jsonify({'ecu': ecu}))
