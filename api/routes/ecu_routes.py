@@ -11,7 +11,7 @@ from api.utils.responses import response_with
 from api.utils import responses as resp
 import logging
 import json
-import datetime
+from datetime import datetime
 
 logging.basicConfig(level=logging.INFO)
 
@@ -57,7 +57,7 @@ def get_ecu():
 @ecu_api.route('/model/<model>', methods=['GET'])
 def get_ecu_by_model(model):
     ecu = Ecu.objects.get(model=model)
-    ecu.date_added = datetime.strptime(ecu.date_added, "%Y-%m-%d")
+    ecu.date_added = datetime.strptime(str(ecu.date_added), "%Y-%m-%d %H:%M:%S")
     logging.info('get_ecu_by_model() --> Retrieving data: ' + str(ecu))
 
     return make_response(jsonify({'ecu': ecu}))
@@ -85,5 +85,6 @@ def delete_ecu(ecu_id):
 @ecu_api.route('/model/<model>', methods=['DELETE'])
 @jwt_required
 def delete_ecu_by_model(model):
+    Ecu.objects.get(model=model).delete()
 
     return make_response('', 204)

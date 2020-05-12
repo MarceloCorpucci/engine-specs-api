@@ -10,7 +10,7 @@ from api.utils.responses import response_with
 from api.utils import responses as resp
 import logging
 import json
-
+from datetime import datetime
 
 logging.basicConfig(level=logging.INFO)
 
@@ -54,6 +54,7 @@ def get_injection_map():
 def get_injection_map_by_ecu(ecu_model):
     ecu = Ecu.objects.get(model=ecu_model)
     injection_map = InjectionMap.objects.get(ecu=ecu)
+    injection_map.date = datetime.strptime(str(injection_map.date), "%Y-%m-%d %H:%M:%S")
     logging.info('get_injection_map_by_ecu() --> Retrieving data: ' + str(injection_map))
 
     return make_response(jsonify({'injection_map': injection_map}))
