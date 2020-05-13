@@ -9,7 +9,6 @@ from flasgger import swag_from
 from api.utils.responses import response_with
 from api.utils import responses as resp
 import logging
-import json
 from datetime import datetime
 
 logging.basicConfig(level=logging.INFO)
@@ -24,7 +23,6 @@ def create_injection_map():
     try:
         data = request.get_json()
         logging.info('create_injection_map() --> Received data: ' + str(data))
-        # json_data = json.loads(str(data).replace('\'', '\"'))
 
         map_to_save = InjectionMap(map=data['map'],
                                    date=data['date'])

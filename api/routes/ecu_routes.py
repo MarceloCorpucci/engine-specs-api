@@ -10,7 +10,6 @@ from flasgger import swag_from
 from api.utils.responses import response_with
 from api.utils import responses as resp
 import logging
-import json
 from datetime import datetime
 
 logging.basicConfig(level=logging.INFO)
@@ -24,7 +23,6 @@ def create_ecu():
     try:
         data = request.get_json()
         logging.info('create_ecu() --> Received data: ' + str(data))
-        # json_data = json.loads(str(data).replace('\'', '\"'))
 
         ecu_to_save = Ecu(model=data['model'],
                           firmware=data['firmware'],
