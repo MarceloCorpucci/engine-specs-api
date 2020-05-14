@@ -34,16 +34,26 @@ def create_injection_map():
         logging.error(e)
         return response_with(resp.INVALID_INPUT_422)
 
-    saved_record = InjectionMap.objects.get(ecu=data['ecu']['model'])
+    saved_record = InjectionMap.objects.get(ecu=map_to_save.ecu)
     logging.info('Saved Injection Map --> ' + str(saved_record))
 
     return make_response(jsonify({'injection_map': saved_record}), 201)
 
 
-@im_api.route('/injection_map', methods=['GET'])
+@im_api.route('/', methods=['GET'])
 def get_injection_map():
     injection_map = InjectionMap.objects.all()
     logging.info('get_injection_map() --> Retrieving data: ' + str(injection_map))
+
+    return make_response(jsonify({'injection_map': injection_map}))
+
+
+@im_api.route('/injection_map/<injection_map_id>', methods=['GET'])
+def get_injection_map_by_id(injection_map_id):
+    bi = bson.objectid.ObjectId(injection_map_id)
+    injection_map = InjectionMap.objects.get(id=bi)
+    injection_map.date = datetime.strptime(str(injection_map.date), "%Y-%m-%d %H:%M:%S")
+    logging.info('get_injection_map_by_id() --> Retrieving data: ' + str(injection_map))
 
     return make_response(jsonify({'injection_map': injection_map}))
 
@@ -67,10 +77,10 @@ def delete_injection_map(injection_map_id):
     return make_response('', 204)
 
 
-@im_api.route('/ecu_model/<ecu_model>', methods=['DELETE'])
+@im_api.route('/ecu/<ecu_model>', methods=['DELETE'])
 @jwt_required
 def delete_injection_map_by_ecu_model(ecu_model):
-    ecu = Ecu.objects.get(model=ecu_model).delete()
+    ecu = Ecu.objects.get(model=ecu_model)
     InjectionMap.objects.get(ecu=ecu).delete()
 
     return make_response('', 204)
