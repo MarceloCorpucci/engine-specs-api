@@ -30,6 +30,6 @@ COPY . .
 
 # Finally, we run uWSGI with the ini file we
 # created earlier
-CMD ["export", "FLASK_APP=\"api.main:create_app('PROD')\""]
-CMD ["export", "FLASK_RUN_PORT=8050"]
-CMD ["flask", "run"]
+# CMD ["export", "FLASK_APP=\"api.main:create_app('PROD')\""]
+# CMD ["export", "FLASK_RUN_PORT=8050"]
+# CMD ["flask", "run"]
