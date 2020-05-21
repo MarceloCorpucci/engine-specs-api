@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO)
 usr_api = Blueprint('user_routes', __name__, url_prefix='/api/users')
 
 
-@usr_api.route('/', methods=['POST'])
+@usr_api.route('/user', methods=['POST'])
 def create_user():
     try:
         request_data = request.get_json()
