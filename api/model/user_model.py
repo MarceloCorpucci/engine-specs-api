@@ -6,7 +6,7 @@ db = MongoEngine()
 
 
 class User(db.Document):
-    email = db.EmailField(required=True)
+    email = db.EmailField(required=True, unique=True)
     password = db.StringField(required=True, max_length=255)
     active = db.BooleanField(default=True)
 
