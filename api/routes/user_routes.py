@@ -1,8 +1,10 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, make_response
 from api.model.user_model import User
 from flask_jwt_extended import create_access_token
 from api.utils.responses import response_with
 from api.utils import responses as resp
+from mongoengine import ValidationError
+
 import logging
 
 
@@ -47,3 +49,14 @@ def authenticate_user():
     except Exception as e:
         logging.error(e)
         return response_with(resp.INVALID_INPUT_422)
+
+
+@usr_api.route('/user/<email>', methods=['DELETE'])
+def delete_user(email):
+    try:
+        User.objects.get(email=email).delete()
+
+    except ValidationError as e:
+        logging.error(e.errors)
+
+    return make_response('', 204)
