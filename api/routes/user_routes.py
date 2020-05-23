@@ -56,6 +56,14 @@ def authenticate_user():
         return response_with(resp.INVALID_INPUT_422)
 
 
+@usr_api.route('/user/<email>', methods=['GET'])
+def get_user_by_email(email):
+    user = User.objects.get(email=email)
+    logging.info('get_user_by_email() --> Sending data: ' + str(user))
+
+    return make_response(jsonify({'user': user}))
+
+
 @usr_api.route('/user/<email>', methods=['DELETE'])
 def delete_user(email):
     try:
