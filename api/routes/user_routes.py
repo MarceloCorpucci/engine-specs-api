@@ -4,6 +4,7 @@ from flask_jwt_extended import create_access_token
 from api.utils.responses import response_with
 from api.utils import responses as resp
 from mongoengine import ValidationError
+import bson
 
 import logging
 
@@ -56,7 +57,7 @@ def authenticate_user():
         return response_with(resp.INVALID_INPUT_422)
 
 
-@usr_api.route('/user/<email>', methods=['GET'])
+@usr_api.route('/email/<email>', methods=['GET'])
 def get_user_by_email(email):
     user = User.objects.get(email=email)
     logging.info('get_user_by_email() --> Sending data: ' + str(user))
@@ -64,8 +65,20 @@ def get_user_by_email(email):
     return make_response(jsonify({'user': user}))
 
 
-@usr_api.route('/user/<email>', methods=['DELETE'])
-def delete_user(email):
+@usr_api.route('/user/<user_id>', methods=['DELETE'])
+def delete_user_by_id(user_id):
+    try:
+        bi = bson.objectid.ObjectId(user_id)
+        User.objects.get(id=bi).delete()
+
+    except ValidationError as e:
+        logging.error(e.errors)
+
+    return make_response('', 204)
+
+
+@usr_api.route('/email/<email>', methods=['DELETE'])
+def delete_user_by_email(email):
     try:
         User.objects.get(email=email).delete()
 
