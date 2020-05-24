@@ -2,7 +2,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "description": "Rest API create to manage ECU presets",
+    "description": "Rest API created to manage ECU presets",
     "version": "1.0.0",
     "title": "Engine-Specs-API",
     "contact": {
@@ -18,13 +18,19 @@
       "url": "/"
     }
   ],
+  "tags": [
+    {
+      "name": "Request",
+      "description": "API for managing Engine and ECU related specs"
+    }
+  ],
   "paths": {
     "/api/engines": {
       "get": {
-        "engines": [
+        "tags": [
           "Engine Request"
         ],
-        "summary": "Returns an Engine spec",
+        "summary": "Returns the available Engine specs",
         "responses": {
           "200": {
             "description": "OK",
