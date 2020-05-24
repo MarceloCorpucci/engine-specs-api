@@ -1,8 +1,9 @@
 Returning a list of saved engines and its specifications.
 ---
 parameters:
-  - name: id
-    type: string
+  - name: engine_id
+    in: path
+    type: id
     required: true
 responses:
   200:
