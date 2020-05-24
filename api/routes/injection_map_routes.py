@@ -5,7 +5,7 @@ from mongoengine import ValidationError
 from api.model.ecu_model import Ecu
 from api.model.user_model import User
 from api.model.injection_map_model import InjectionMap
-from flasgger import swag_from
+# from flasgger import swag_from
 from api.utils.responses import response_with
 from api.utils import responses as resp
 import logging

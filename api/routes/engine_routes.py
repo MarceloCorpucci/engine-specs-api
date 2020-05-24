@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required
 import bson
 from mongoengine import ValidationError
 from api.model.engine_model import Engine
-from flasgger import swag_from
+# from flasgger import swag_from
 import logging
 
 
@@ -15,7 +15,7 @@ ng_api = Blueprint('ng_api', __name__, url_prefix='/api/engines')
 
 @ng_api.route('/engine', methods=['POST'])
 @jwt_required
-@swag_from('create_engine.yml')
+# @swag_from('create_engine.yml')
 def create_engine():
     data = request.get_json()
     try:
@@ -35,7 +35,7 @@ def create_engine():
 
 
 @ng_api.route('/', methods=['GET'])
-@swag_from('engines.yml')
+# @swag_from('engines.yml')
 def get_engines():
     engines = Engine.objects.all()
     logging.info('get_engines() --> Retrieving data: ' + str(engines))
@@ -44,7 +44,7 @@ def get_engines():
 
 
 @ng_api.route('/engine/<engine_id>', methods=['GET'])
-@swag_from('engine.yml')
+# @swag_from('engine.yml')
 def get_engine_id(engine_id):
     bi = bson.objectid.ObjectId(engine_id)
     engine = Engine.objects.get(id=bi)

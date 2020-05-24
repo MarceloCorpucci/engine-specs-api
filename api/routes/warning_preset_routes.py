@@ -4,7 +4,7 @@ import bson
 from mongoengine import ValidationError
 from api.model.engine_model import Engine
 from api.model.warning_preset_model import WarningPreset
-from flasgger import swag_from
+# from flasgger import swag_from
 import logging
 import json
 

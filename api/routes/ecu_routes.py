@@ -6,7 +6,7 @@ from api.model.ecu_model import Ecu
 from api.model.engine_model import Engine
 from api.model.warning_preset_model import WarningPreset
 from api.model.user_model import User
-from flasgger import swag_from
+# from flasgger import swag_from
 from api.utils.responses import response_with
 from api.utils import responses as resp
 import logging

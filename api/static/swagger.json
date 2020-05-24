@@ -1,0 +1,88 @@
+
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Rest API create to manage ECU presets",
+    "version": "1.0.0",
+    "title": "Engine-Specs-API",
+    "contact": {
+      "email": "mcorpucci@gmail.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "paths": {
+    "/api/engines": {
+      "get": {
+        "engines": [
+          "Engine Request"
+        ],
+        "summary": "Returns an Engine spec",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/EngineRequests"
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "id": {
+        "properties": {
+          "uuid": {
+            "type": "string"
+          }
+        }
+      },
+      "EngineRequestPostBody": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string",
+            "format": "string"
+          },
+          "displacement": {
+            "type": "int"
+          },
+          "valve_amount": {
+            "type": "int"
+          },
+          "injectors": {
+            "type": "string",
+            "format": "string"
+          },
+          "piston_type": {
+            "type": "string",
+            "format": "string"
+          },
+          "camshaft": {
+            "type": "string",
+            "format": "string"
+          },
+          "power": {
+            "type": "int"
+          },
+          "forced_induction": {
+            "type": "boolean"
+          },
+          "fuel_type": {
+            "type": "string"
+          }
+        }
+      },
+      "EngineRequests": {
+      }
+    }
+  }
+}
