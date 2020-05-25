@@ -56,6 +56,36 @@
             "description": "Bad request"
           }
         }
+      },
+    },
+    "/api/engines/engine/{engine_id}": {
+      "get": {
+        "summary": "Returns an Engine by its ID",
+        "tags": [
+          "Engine Requests"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "engine_id",
+            "required": true,
+            "description": "Engine Request Id",
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/engineResponseBody"
+            }
+          }
+        }
       }
     },
     "/api/engines": {
@@ -77,6 +107,13 @@
   },
   "components": {
     "schemas": {
+      "id": {
+        "properties": {
+          "uuid": {
+            "type": "string"
+          }
+        }
+      },
       "engineResponseBody": {
         "type": "object",
         "properties": {

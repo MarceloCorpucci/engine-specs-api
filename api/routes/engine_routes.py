@@ -33,7 +33,6 @@ def create_engine():
 
 
 @ng_api.route('/', methods=['GET'])
-# @swag_from('engines.yml')
 def get_engines():
     engines = Engine.objects.all()
     logging.info('get_engines() --> Retrieving data: ' + str(engines))
@@ -42,7 +41,6 @@ def get_engines():
 
 
 @ng_api.route('/engine/<engine_id>', methods=['GET'])
-# @swag_from('engine.yml')
 def get_engine_id(engine_id):
     bi = bson.objectid.ObjectId(engine_id)
     engine = Engine.objects.get(id=bi)
