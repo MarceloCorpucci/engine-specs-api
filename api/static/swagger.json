@@ -20,15 +20,48 @@
   ],
   "tags": [
     {
-      "name": "Request",
-      "description": "API for managing Engine and ECU related specs"
+      "name": "Engine Requests",
+      "description": "Engine related specs"
     }
   ],
   "paths": {
+    "/api/engines/engine": {
+      "post": {
+        "tags": [
+          "Engine Requests"
+        ],
+        "summary": "Create a new Engine request",
+        "requestBody": {
+          "description": "Request Post Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/engineRequestPostBody"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/engineResponseBody"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
     "/api/engines": {
       "get": {
         "tags": [
-          "Engine Request"
+          "Engine Requests"
         ],
         "summary": "Returns the available Engine specs",
         "responses": {
@@ -44,14 +77,43 @@
   },
   "components": {
     "schemas": {
-      "id": {
+      "engineResponseBody": {
+        "type": "object",
         "properties": {
-          "uuid": {
+          "model": {
+            "type": "string",
+            "format": "string"
+          },
+          "displacement": {
+            "type": "int"
+          },
+          "valve_amount": {
+            "type": "int"
+          },
+          "injectors": {
+            "type": "string",
+            "format": "string"
+          },
+          "piston_type": {
+            "type": "string",
+            "format": "string"
+          },
+          "camshaft": {
+            "type": "string",
+            "format": "string"
+          },
+          "power": {
+            "type": "int"
+          },
+          "forced_induction": {
+            "type": "boolean"
+          },
+          "fuel_type": {
             "type": "string"
           }
         }
       },
-      "EngineRequestPostBody": {
+      "engineRequestPostBody": {
         "type": "object",
         "properties": {
           "model": {

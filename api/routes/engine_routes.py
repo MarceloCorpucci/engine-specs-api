@@ -3,7 +3,6 @@ from flask_jwt_extended import jwt_required
 import bson
 from mongoengine import ValidationError
 from api.model.engine_model import Engine
-# from flasgger import swag_from
 import logging
 
 
@@ -15,7 +14,6 @@ ng_api = Blueprint('ng_api', __name__, url_prefix='/api/engines')
 
 @ng_api.route('/engine', methods=['POST'])
 @jwt_required
-# @swag_from('create_engine.yml')
 def create_engine():
     data = request.get_json()
     try:
