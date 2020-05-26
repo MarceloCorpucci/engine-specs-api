@@ -25,8 +25,27 @@
     }
   ],
   "paths": {
+    "/api/engines": {
+      "get": {
+        "tags": [
+          "Engine Requests"
+        ],
+        "summary": "Returns the available Engine specs",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/EngineRequests"
+            }
+          }
+        }
+      }
+    },
     "/api/engines/engine": {
       "post": {
+        "security": {
+          "bearerAuth": []
+        },
         "tags": [
           "Engine Requests"
         ],
@@ -54,9 +73,12 @@
           },
           "400": {
             "description": "Bad request"
+          },
+          "401": {
+            "$ref": "#/components/schemas/authResponseError"
           }
         }
-      },
+      }
     },
     "/api/engines/engine/{engine_id}": {
       "get": {
@@ -86,19 +108,64 @@
             }
           }
         }
-      }
-    },
-    "/api/engines": {
-      "get": {
+      },
+      "delete": {
+        "summary": "Delete an Engine by its ID",
+        "security": {
+          "bearerAuth": []
+        },
         "tags": [
           "Engine Requests"
         ],
-        "summary": "Returns the available Engine specs",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "engine_id",
+            "required": true,
+            "description": "Engine Request Id",
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          },
+          "401": {
+            "$ref": "#/components/schemas/authResponseError"
+          }
+        }
+      }
+    },
+    "/api/engines/model/{model}": {
+      "get": {
+        "summary": "Returns an Engine by its model",
+        "tags": [
+          "Engine Requests"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "model",
+            "required": true,
+            "description": "Engine model",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/components/schemas/EngineRequests"
+              "$ref": "#/components/schemas/engineResponseBody"
             }
           }
         }
@@ -106,6 +173,13 @@
     }
   },
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
     "schemas": {
       "id": {
         "properties": {
@@ -113,6 +187,9 @@
             "type": "string"
           }
         }
+      },
+      "authResponseError": {
+        "description": "Missing Authorization Header"
       },
       "engineResponseBody": {
         "type": "object",

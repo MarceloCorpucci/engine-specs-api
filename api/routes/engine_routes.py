@@ -12,6 +12,14 @@ logging.basicConfig(level=logging.INFO)
 ng_api = Blueprint('ng_api', __name__, url_prefix='/api/engines')
 
 
+@ng_api.route('/', methods=['GET'])
+def get_engines():
+    engines = Engine.objects.all()
+    logging.info('get_engines() --> Retrieving data: ' + str(engines))
+
+    return make_response(jsonify({'engines': engines}))
+
+
 @ng_api.route('/engine', methods=['POST'])
 @jwt_required
 def create_engine():
@@ -32,27 +40,11 @@ def create_engine():
     return make_response(jsonify({'engine': saved_engine}), 201)
 
 
-@ng_api.route('/', methods=['GET'])
-def get_engines():
-    engines = Engine.objects.all()
-    logging.info('get_engines() --> Retrieving data: ' + str(engines))
-
-    return make_response(jsonify({'engines': engines}))
-
-
 @ng_api.route('/engine/<engine_id>', methods=['GET'])
 def get_engine_id(engine_id):
     bi = bson.objectid.ObjectId(engine_id)
     engine = Engine.objects.get(id=bi)
     logging.info('get_engine_id() --> Retrieving data: ' + str(engine))
-
-    return make_response(jsonify({'engine': engine}))
-
-
-@ng_api.route('/model/<model>', methods=['GET'])
-def get_engine(model):
-    engine = Engine.objects.get(model=model)
-    logging.info('get_engine() --> Retrieving data: ' + str(engine))
 
     return make_response(jsonify({'engine': engine}))
 
@@ -64,3 +56,11 @@ def delete_engine(engine_id):
     Engine.objects.get(id=bi).delete()
 
     return make_response('', 204)
+
+
+@ng_api.route('/model/<model>', methods=['GET'])
+def get_engine(model):
+    engine = Engine.objects.get(model=model)
+    logging.info('get_engine() --> Retrieving data: ' + str(engine))
+
+    return make_response(jsonify({'engine': engine}))
