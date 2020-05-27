@@ -22,6 +22,10 @@
     {
       "name": "Engine Requests",
       "description": "Engine related specs"
+    },
+    {
+      "name": "Warning Preset Requests",
+      "description": "Warning Preset related specs"
     }
   ],
   "paths": {
@@ -172,6 +176,22 @@
       }
     }
   },
+  "/api/warning_presets": {
+      "get": {
+        "tags": [
+          "Warning Preset Requests"
+        ],
+        "summary": "Returns the available Engine's warning preset",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/EngineRequests"
+            }
+          }
+        }
+      }
+    },
   "components": {
     "securitySchemes": {
       "bearerAuth": {
