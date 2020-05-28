@@ -4,6 +4,7 @@ from api.model.engine_model import db
 # from flasgger import Swagger
 from flask_swagger_ui import get_swaggerui_blueprint
 from api.profile import prod, dev, test
+from api.routes.health_route import health_check_api
 from api.routes.engine_routes import ng_api
 from api.routes.warning_preset_routes import wp_api
 from api.routes.user_routes import usr_api
@@ -31,6 +32,7 @@ def create_app(profile):
     app.config['JWT_SECRET_KEY'] = 'super-secret'
     jwt = JWTManager(app)
     db.init_app(app)
+    app.register_blueprint(health_check_api)
     app.register_blueprint(usr_api)
     app.register_blueprint(ng_api)
     app.register_blueprint(wp_api)
